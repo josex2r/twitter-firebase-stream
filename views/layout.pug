@@ -4,6 +4,20 @@ html
     title= title
     link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='https://cdn.firebase.com/libs/firebaseui/2.5.1/firebaseui.css')
+    script(src='https://www.gstatic.com/firebasejs/4.9.1/firebase.js')
+    script(src='https://cdn.firebase.com/libs/firebaseui/2.5.1/firebaseui.js')
+    script(src='/javascripts/jquery.min.js')
+    script(src='/javascripts/bootstrap.min.js')
+    script
+      | firebase.initializeApp({
+      | apiKey: '#{env.FIREBASE_API}',
+      | authDomain: '#{env.FIREBASE_AUTH}',
+      | databaseURL: '#{env.FIREBASE_DATABASE}',
+      | storageBucket: '#{env.FIREBASE_STORAGE}',
+      | messagingSenderId: '#{env.FIREBASE_MESSAGING}',
+      | projectId: '#{env.FIREBASE_PROJECT}'
+      | });
   body
     a.github-corner(href='https://github.com/josex2r/twitter-stream', aria-label='View source on Github')
       svg(width='80', height='80', viewbox='0 0 250 250', style='fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;', aria-hidden='true')
@@ -13,11 +27,9 @@ html
 
     .navbar.navbar-inverse.bg-inverse
       .container.d-flex.justify-content-between
-        a.navbar-brand(href='/') Simple Chat
-        if user
-          a.navbar-brand(href='/logout') Logout
+        a.navbar-brand(href='/') Twitter Stream
 
-    .container
+    #main.container
       block content
 
     footer.text-muted
@@ -27,6 +39,4 @@ html
         p Expressjs + Socket.io chat example - created by 
           a(href='https://github.com/josex2r') @josex2r
 
-    script(src='/javascripts/jquery.min.js')
-    script(src='/javascripts/bootstrap.min.js')
-    script(src='/socket.io/socket.io.js')
+

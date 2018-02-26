@@ -13,6 +13,7 @@
     "debug": "~2.6.9",
     "express": "~4.15.5",
     "express-session": "^1.15.6",
+    "firebase": "^4.10.1",
     "morgan": "~1.9.0",
     "node-env-file": "^0.1.8",
     "pug": "^2.0.0-rc.4",
