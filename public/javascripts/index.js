@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const provider = new firebase.auth.GoogleAuthProvider();
 
     firebase.auth().signInWithPopup(provider).then((result) => {
-      window.location.href = window.location.href + 'map';
+      window.location.href = window.location.origin + '/map';
     }).catch((error) => {
       if (alert) {
         alert.remove();

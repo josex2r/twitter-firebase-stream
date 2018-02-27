@@ -11,8 +11,12 @@ body {
     padding: 2em;
 }
 
-#map {
+#map, #tweets {
   height: 500px;
+}
+
+#tweets {
+  overflow-y: scroll;
 }
 
 footer {

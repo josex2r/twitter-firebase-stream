@@ -1,5 +1,5 @@
 let map;
-let marker;
+let markers = [];
 
 function initMap() {
   // Create a map object and specify the DOM element for display.
@@ -12,28 +12,31 @@ function initMap() {
   initTweets();
 }
 
-function renderTweet(tweet) {
-  const container = document.querySelector('#tweets');
-
-  // Clear container
-  container.innerHTML = '';
-
-  // Remove last marker
-  if (marker) {
-    marker.setMap(null);
-  }
-
-  // Load in map
-  marker = new google.maps.Marker({
+function addMarker(map, tweet) {
+  const marker = new google.maps.Marker({
     position: { 
       lat: tweet.lat,
       lng: tweet.lng
     },
     map,
+    zIndex: 99 + markers.length,
+    animation: google.maps.Animation.DROP,
+    icon: tweet.img,
     title: tweet.user
   });
-  
-  // Load in container
+
+  markers.push(marker);
+}
+
+function clean() {
+  document.querySelector('#tweets').innerHTML = '';
+
+  markers.forEach((marker) => marker.setMap(null));
+  markers = [];
+}
+
+function renderTweet(tweet) {
+  const container = document.querySelector('#tweets');
   const tweetContainer = document.createElement('div');
   
   tweetContainer.classList.add('card');
@@ -45,22 +48,40 @@ function renderTweet(tweet) {
     </div>
     `;
 
-  container.appendChild(tweetContainer);
+  $(container).prepend(tweetContainer);
 }
 
 function loadHashtag(hashtag) {
+  // We dont need to wait until service responds, just start receiving twitter events.
+  fetch(`${window.location.href}?hashtag=${hashtag}`, { method: 'put'});
   // Load tweets
-  const tweetListener = firebase.database().ref(`tweets/${hashtag}`);
+  const tweetRef = firebase
+    .database()
+    .ref(`tweets/${hashtag}`)
+    .limitToLast(5);
 
-  tweetListener.on('value', (snapshot) => {
-    console.log(snapshot.val());
-    renderTweet(snapshot.val());
+  tweetRef.on('child_added', (snapshot) => {
+    const tweet = snapshot.val();
+
+    if (tweet) {
+      // Load in container
+      renderTweet(tweet);
+      // Load in map
+      addMarker(map, tweet);
+    }
   });
 
-  return tweetListener;
+  return tweetRef;
+}
+
+function logout() {
+  firebase.auth().signOut().then(() => {
+    window.location.href = window.location.origin + '?logout=true';
+  });
 }
 
 function initTweets() {
+  const logout = document.querySelector('#logout');
   const input = document.querySelector('input');
 
   // Redirect to login if user is not logged in
@@ -70,10 +91,31 @@ function initTweets() {
     }
   });
 
+  logout.addEventListener('click', () => {
+    firebase.auth().signOut().then(() => {
+      window.location.href = window.location.origin + '?logout=true';
+    });
+  });
+
   // Load tweets
   let debounce;
+  let tweetRef;
+  let prevHashtag;
   input.addEventListener('keyup', (event) => {
     clearTimeout(debounce);
-    debounce = setTimeout(() => loadHashtag(event.target.value), 1000);
+
+    debounce = setTimeout(() => {
+      if (prevHashtag !== event.target.value) {
+        // Remove previous Firebase references
+        if (tweetRef) {
+          tweetRef.off();
+        }
+        // Clean map
+        clean();
+        // Start listening DB events
+        prevHashtag = event.target.value;
+        tweetRef = loadHashtag(event.target.value);
+      }
+    }, 1000);
   });
 };
