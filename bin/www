@@ -3,18 +3,12 @@
 /**
  * Module dependencies.
  */
-
+const env = require('node-env-file');
+const path = require('path');
+env(path.resolve(__dirname, '..', '.env'));
 const app = require('../app');
 const debug = require('debug')('simple-chat:server');
 const http = require('http');
-const env = require('node-env-file');
-const path = require('path');
-
-/**
- * Load .env vars.
- */
-
-env(path.resolve(__dirname, '..', '.env'));
 
 /**
  * Get port from environment and store in Express.
