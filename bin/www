@@ -3,10 +3,11 @@
 /**
  * Module dependencies.
  */
-const env = require('node-env-file');
+require('dotenv').config();
+
 const path = require('path');
-env(path.resolve(__dirname, '..', '.env'));
 const app = require('../app');
+const initSocket = require('../lib/socket');
 const debug = require('debug')('simple-chat:server');
 const http = require('http');
 
@@ -14,7 +15,7 @@ const http = require('http');
  * Get port from environment and store in Express.
  */
 
-const port = normalizePort(process.env.PORT || '8080');
+const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
 /**
@@ -22,6 +23,8 @@ app.set('port', port);
  */
 
 const server = http.createServer(app);
+
+initSocket(server);
 
 
 /**

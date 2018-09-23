@@ -11,16 +11,4 @@ router.get('/', (req, res) => {
     });
 });
 
-router.put('/', (req, res) => {
-  console.log('Initializing Twitter stream', req.query.hashtag);
-
-  const stream = initStream(req.query.hashtag);
-
-  if (!stream) {
-    res.sendStatus(404);
-  } else {
-    res.sendStatus(200);
-  }
-});
-
 module.exports = router;

@@ -42,7 +42,7 @@ function renderTweet(tweet) {
   
   tweetContainer.classList.add('card');
   tweetContainer.innerHTML = `
-    <div class="card-body">
+    <div>
       <img class="card-img-left" src="${tweet.img}">
       <h5 class="card-title">${tweet.user}</h5>
       <p class="card-text">${tweet.text}</p>
@@ -52,9 +52,8 @@ function renderTweet(tweet) {
   $(container).prepend(tweetContainer);
 }
 
-function loadHashtag(hashtag) {
-  // We dont need to wait until service responds, just start receiving twitter events.
-  fetch(`${window.location.href}?hashtag=${hashtag}`, { method: 'put'});
+function loadHashtag(hashtag, socket) {
+  socket.emit('hashtag', hashtag);
   // Load tweets
   const tweetRef = firebase
     .database()
@@ -98,6 +97,8 @@ function initTweets() {
     });
   });
 
+  let socket = io();
+
   // Load tweets
   let debounce;
   let tweetRef;
@@ -115,7 +116,7 @@ function initTweets() {
         clean();
         // Start listening DB events
         prevHashtag = event.target.value;
-        tweetRef = loadHashtag(event.target.value);
+        tweetRef = loadHashtag(event.target.value, socket);
       }
     }, 1000);
   });

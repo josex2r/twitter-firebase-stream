@@ -4,23 +4,24 @@
   "private": true,
   "scripts": {
     "start": "./bin/www",
-    "server": "nodemon --watch public --watch routes --watch views --watch app.js --watch lib ./bin/www"
+    "server": "nodemon --watch bin --watch public --watch routes --watch views --watch app.js --watch lib ./bin/www"
   },
   "dependencies": {
     "body-parser": "~1.18.2",
     "cookie-parser": "~1.4.3",
     "cookie-session": "^2.0.0-beta.3",
     "debug": "~2.6.9",
+    "dotenv": "^6.0.0",
     "express": "~4.15.5",
     "express-session": "^1.15.6",
-    "firebase": "^4.10.1",
+    "firebase": "^4.13.1",
     "morgan": "~1.9.0",
-    "node-env-file": "^0.1.8",
     "pug": "^2.0.0-rc.4",
     "serve-favicon": "~2.4.5",
+    "socket.io": "^2.1.1",
     "twitter": "^1.7.1"
   },
   "devDependencies": {
-    "nodemon": "^1.14.12"
+    "nodemon": "^1.18.4"
   }
 }

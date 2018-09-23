@@ -13,5 +13,6 @@ block content
 
   #tweets
   
+  script(src='/socket.io/socket.io.js', type='text/javascript')
   script(src='javascripts/map.js', type='text/javascript')
-  script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyCBR3znMf2pEA8uJl9UsqxFvwPJQ9Z9_aI&callback=initMap', async, defer)
+  script(src='https://maps.googleapis.com/maps/api/js?callback=initMap&key=' + env.MAPS_API, async, defer)
