@@ -4,18 +4,8 @@ html
     title= title
     link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
-    script(src='https://www.gstatic.com/firebasejs/5.5.1/firebase.js')
     script(src='/javascripts/jquery.min.js')
     script(src='/javascripts/bootstrap.min.js')
-    script
-      | firebase.initializeApp({
-      | apiKey: '#{env.FIREBASE_API}',
-      | authDomain: '#{env.FIREBASE_AUTH}',
-      | databaseURL: '#{env.FIREBASE_DATABASE}',
-      | storageBucket: '#{env.FIREBASE_STORAGE}',
-      | messagingSenderId: '#{env.FIREBASE_MESSAGING}',
-      | projectId: '#{env.FIREBASE_PROJECT}'
-      | });
   body
     a.github-corner(href='https://github.com/josex2r/twitter-stream', aria-label='View source on Github')
       svg(width='80', height='80', viewbox='0 0 250 250', style='fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;', aria-hidden='true')

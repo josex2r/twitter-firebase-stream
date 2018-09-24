@@ -1,6 +1,4 @@
 const express = require('express');
-const initStream = require('../lib/twitter-stream');
-
 const router = express.Router();
 
 router.get('/', (req, res) => {

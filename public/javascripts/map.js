@@ -52,72 +52,9 @@ function renderTweet(tweet) {
   $(container).prepend(tweetContainer);
 }
 
-function loadHashtag(hashtag, socket) {
-  socket.emit('hashtag', hashtag);
-  // Load tweets
-  const tweetRef = firebase
-    .database()
-    .ref(`tweets/${hashtag}`)
-    .limitToLast(20);
-
-  tweetRef.on('child_added', (snapshot) => {
-    const tweet = snapshot.val();
-
-    if (tweet) {
-      // Load in container
-      renderTweet(tweet);
-      // Load in map
-      addMarker(map, tweet);
-    }
-  });
-
-  return tweetRef;
-}
-
-function logout() {
-  firebase.auth().signOut().then(() => {
-    window.location.href = window.location.origin + '?logout=true';
-  });
-}
-
 function initTweets() {
   const logout = document.querySelector('#logout');
   const input = document.querySelector('input');
 
-  // Redirect to login if user is not logged in
-  firebase.auth().onAuthStateChanged((user) => {
-    if (!user) {
-      window.location.href = location.origin;
-    }
-  });
-
-  logout.addEventListener('click', () => {
-    firebase.auth().signOut().then(() => {
-      window.location.href = window.location.origin + '?logout=true';
-    });
-  });
-
-  let socket = io();
-
-  // Load tweets
-  let debounce;
-  let tweetRef;
-  let prevHashtag;
-  input.addEventListener('keyup', (event) => {
-    clearTimeout(debounce);
-
-    debounce = setTimeout(() => {
-      if (prevHashtag !== event.target.value && event.target.value) {
-        // Remove previous Firebase references
-        if (tweetRef) {
-          tweetRef.off();
-        }
-        // Clean map
-        clean();
-        // Start listening DB events
-        prevHashtag = event.target.value;
-        tweetRef = loadHashtag(event.target.value, socket);
-      }
-    }, 1000);
-  });
+  // Your code!
 };

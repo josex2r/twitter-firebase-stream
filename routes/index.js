@@ -1,10 +1,5 @@
 const express = require('express');
-const map = require('./map');
-const locals = require('../lib/middlewares/locals');
-
 const router = express.Router();
-
-router.use(locals);
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -18,7 +13,5 @@ router.get('/', function(req, res, next) {
     });
   }
 });
-
-router.use('/map', map);
 
 module.exports = router;
